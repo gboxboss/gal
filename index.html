@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reward – Claim Now</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Coastal Navy Palette */
+            --primary: #0e2238;
+            --primary-hover: #071320;
+            --primary-soft: #eaf1f8;
+            --accent: #2c4d6f;
+            
+            --text-dark: #121820;
+            --text-muted: #536271;
+            --text-subtle: #8a9ba8;
+            --surface-border: #dde5ed;
+            --canvas: #f4f7fa;
+            
+            --font-main: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'JetBrains Mono', monospace;
+        }
+
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+            background: var(--canvas);
+            color: var(--text-dark);
+            font-family: var(--font-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .viewport-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2vh 4vw;
+        }
+
+        .content-frame {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 390px;
+            height: 100%;
+            justify-content: center;
+            gap: 2.4vh;
+        }
+
+        .coupon-panel {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 14px;
+            position: relative;
+            box-shadow: 0 1.2vh 3.5vh rgba(14, 34, 56, 0.08);
+            border: 2px dashed var(--surface-border);
+            padding: clamp(18px, 3vh, 26px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh;
+            flex-shrink: 0;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .coupon-panel:hover {
+            transform: translateY(-2px);
+            border-color: #9cb5cb;
+        }
+
+        .coupon-panel::before,
+        .coupon-panel::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 22px;
+            height: 22px;
+            background: var(--canvas);
+            border-radius: 50%;
+            border: 2px dashed var(--surface-border);
+            z-index: 3;
+        }
+
+        .coupon-panel::before {
+            left: -13px;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .coupon-panel::after {
+            right: -13px;
+            border-left-color: transparent;
+            border-bottom-color: transparent;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--surface-border);
+            padding-bottom: 1.5vh;
+            min-height: 44px;
+        }
+
+        .header-logo {
+            height: clamp(26px, 4.6vh, 36px);
+            max-width: 150px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header-fallback {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .status-pill {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: clamp(0.6rem, 1.2vh, 0.72rem);
+            font-weight: 700;
+            padding: 5px 11px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .panel-center {
+            text-align: center;
+            padding: 0.8vh 0;
+        }
+
+        .balance-tag {
+            font-size: clamp(0.62rem, 1.2vh, 0.72rem);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .balance-val {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vh, 3.2rem);
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .balance-val span {
+            font-size: clamp(1.2rem, 2.5vh, 1.5rem);
+            vertical-align: text-top;
+            margin-right: 2px;
+            color: var(--accent);
+        }
+
+        .panel-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 1vh;
+        }
+
+        .code-lines {
+            display: flex;
+            gap: 2px;
+            height: clamp(20px, 3.8vh, 26px);
+            align-items: stretch;
+            opacity: 0.75;
+        }
+
+        .code-lines i {
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .verification-badge {
+            font-size: clamp(0.65rem, 1.3vh, 0.75rem);
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .verification-badge::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .instruction-sequence {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: clamp(6px, 1.2vh, 10px) 22px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--surface-border);
+            flex-shrink: 1;
+            position: relative;
+        }
+
+        .instruction-sequence::before {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: clamp(24px, 3.5vh, 32px);
+            bottom: clamp(24px, 3.5vh, 32px);
+            width: 2px;
+            background: var(--surface-border);
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        .seq-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: clamp(12px, 1.9vh, 16px) 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .seq-item:not(:last-child) {
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .seq-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid var(--surface-border);
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+            z-index: 2;
+        }
+
+        .seq-item:last-child .seq-circle {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(14, 34, 56, 0.35);
+        }
+
+        .seq-content {
+            font-size: clamp(0.75rem, 1.5vh, 0.85rem);
+            font-weight: 600;
+            color: var(--text-dark);
+            flex: 1;
+            line-height: 1.35;
+        }
+
+        .action-area {
+            width: 100%;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: clamp(14px, 2.3vh, 18px);
+            font-size: clamp(0.95rem, 2vh, 1.05rem);
+            font-weight: 700;
+            color: #ffffff;
+            background: var(--primary);
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 16px rgba(14, 34, 56, 0.25);
+            min-height: clamp(50px, 6.8vh, 58px);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .action-button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(14, 34, 56, 0.32);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        .btn-label {
+            transition: opacity 0.2s ease;
+        }
+
+        .indicator-spinner {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: spin 0.75s linear infinite;
+        }
+
+        .action-button.loading .btn-label {
+            opacity: 0;
+        }
+
+        .action-button.loading .indicator-spinner {
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .disclaimer-note {
+            font-size: clamp(0.6rem, 1.2vh, 0.7rem);
+            color: var(--text-subtle);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="viewport-wrapper">
+        <div class="content-frame">
+            
+            <!-- Voucher Display -->
+            <div class="coupon-panel">
+                <div class="panel-header">
+                    <img
+                        src="https://en.cap3000.com/-/media/cap3000/images/enseignes/3893893866_hollisterlogopng.pngn"
+                        alt="Logo"
+                        class="header-logo"
+                        onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'header-fallback\'>EXCLUSIVE REWARD</span><div class=\'status-pill\'>Verified</div>';"
+                    >
+                    <div class="status-pill">Reward</div>
+                </div>
+
+                <div class="panel-center">
+                    <div class="balance-tag">Reward Balance</div>
+                    <div class="balance-val"><span>$</span>500</div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="code-lines">
+                        <i style="width: 2px"></i>
+                        <i style="width: 4px"></i>
+                        <i style="width: 1px"></i>
+                        <i style="width: 3px"></i>
+                        <i style="width: 2px"></i>
+                        <i style="width: 1px"></i>
+                        <i style="width: 4px"></i>
+                        <i style="width: 2px"></i>
+                        <i style="width: 3px"></i>
+                        <i style="width: 1px"></i>
+                        <i style="width: 2px"></i>
+                        <i style="width: 4px"></i>
+                        <i style="width: 1px"></i>
+                    </div>
+                    <div class="verification-badge">ACTIVE</div>
+                </div>
+            </div>
+
+            <!-- Steps List -->
+            <div class="instruction-sequence">
+                <div class="seq-item">
+                    <div class="seq-circle">1</div>
+                    <div class="seq-content">Click the button below</div>
+                </div>
+                <div class="seq-item">
+                    <div class="seq-circle">2</div>
+                    <div class="seq-content">Enter your email &amp; basic info</div>
+                </div>
+                <div class="seq-item">
+                    <div class="seq-circle">3</div>
+                    <div class="seq-content">Complete 4 to 5 required deals</div>
+                </div>
+                <div class="seq-item">
+                    <div class="seq-circle">4</div>
+                    <div class="seq-content">Receive your reward once verified</div>
+                </div>
+            </div>
+
+            <!-- Action Area -->
+            <div class="action-area">
+                <button class="action-button" id="trigger-btn">
+                    <span class="btn-label">Claim Reward</span>
+                    <span class="indicator-spinner"></span>
+                </button>
+                <div class="disclaimer-note">Available in US, CA, AU, UK</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const trigger = document.getElementById('trigger-btn');
+        const targetUrl = 'https://giftclick.org/aff_c?offer_id=2768&aff_id=171242';
+
+        trigger.addEventListener('click', function() {
+            trigger.classList.add('loading');
+            setTimeout(function() {
+                window.location.href = targetUrl;
+            }, 800);
+        });
+    })();
+    </script>
+</body>
+</html>
