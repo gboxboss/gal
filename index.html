@@ -3,364 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Member Reward – Claim Now</title>
+    <title>Reward – Claim Now</title>
     <meta name="robots" content="noindex, nofollow">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        *, *::before, *::after { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            /* Brand Color Palette */
-            --brand-primary: #005DAA;
-            --brand-primary-dark: #00457F;
-            --brand-primary-light: #EBF3FA;
-            --brand-accent: #E31837;
-            --brand-accent-light: #FFECEE;
+            /* Branded Colors */
+            --brand: #CC0000;
+            --brand-dark: #990000;
+            --brand-light: #FFEAEB;
             
-            --text: #0F172A;
-            --text-mid: #475569;
-            --text-light: #94A3B8;
-            --border: #E2E8F0;
-            --bg: #F1F5F9;
-            --surface: #FFFFFF;
+            --text: #111111;
+            --text-mid: #4a5568;
+            --text-light: #8896a6;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
             --font: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        html, body {
-            height: 100dvh;
-            overflow: hidden;
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font);
-            -webkit-font-smoothing: antialiased;
+        html, body { 
+            height: 100dvh; 
+            overflow: hidden; 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: var(--font); 
+        }
+        
+        .page { 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 2vh 4vw; 
         }
 
-        .page {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2vh 4vw;
+        .container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            max-width: 380px; 
+            height: 100%; 
+            justify-content: center; 
+            gap: 2.5vh; 
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 390px;
-            height: 100%;
-            justify-content: center;
-            gap: 2.2vh;
-        }
-
+        /* ── VOUCHER DESIGN ── */
         .voucher {
-            width: 100%;
-            background: var(--surface);
-            border-radius: 14px;
+            width: 100%; 
+            background: #fff; 
+            border-radius: 12px; 
             position: relative;
-            box-shadow: 0 1vh 3vh rgba(0, 93, 170, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 1vh 3vh rgba(204, 0, 0, 0.08); 
             border: 2px dashed var(--border);
-            padding: clamp(16px, 2.8vh, 24px);
-            display: flex;
+            padding: clamp(16px, 3vh, 24px); 
+            display: flex; 
             flex-direction: column;
-            gap: 1.5vh;
-            flex-shrink: 0;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            gap: 1.5vh; 
+            flex-shrink: 0; 
+            transition: transform 0.2s, border-color 0.2s;
         }
-
-        .voucher:hover {
-            transform: translateY(-2px);
-            border-color: #93c5fd;
-            box-shadow: 0 1.2vh 3.5vh rgba(0, 93, 170, 0.12);
-        }
-
+        .voucher:hover { transform: translateY(-2px); border-color: #fca5a5; }
+        
         .voucher::before, .voucher::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 22px;
-            height: 22px;
-            background: var(--bg);
-            border-radius: 50%;
+            content: ''; 
+            position: absolute; 
+            top: 50%; 
+            width: 20px; 
+            height: 20px;
+            background: var(--bg); 
+            border-radius: 50%; 
             transform: translateY(-50%);
             border: 2px dashed var(--border);
-            z-index: 3;
         }
+        .voucher::before { left: -12px; border-right-color: transparent; border-top-color: transparent; transform: translateY(-50%) rotate(45deg); }
+        .voucher::after { right: -12px; border-left-color: transparent; border-bottom-color: transparent; transform: translateY(-50%) rotate(45deg); }
 
-        .voucher::before {
-            left: -13px;
-            border-right-color: transparent;
-            border-top-color: transparent;
-            transform: translateY(-50%) rotate(45deg);
+        .v-top { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 1.5vh; 
         }
-
-        .voucher::after {
-            right: -13px;
-            border-left-color: transparent;
-            border-bottom-color: transparent;
-            transform: translateY(-50%) rotate(45deg);
-        }
-
-        .v-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1.5vh;
-        }
-
-        .v-logo {
-            height: clamp(26px, 4.5vh, 36px);
+        .v-logo { 
+            height: clamp(28px, 5vh, 40px); 
+            width: auto;
             max-width: 140px;
-            object-fit: contain;
+            object-fit: contain; 
+        }
+        .v-badge { 
+            background: var(--brand-light); 
+            color: var(--brand); 
+            font-size: clamp(0.6rem, 1.2vh, 0.7rem); 
+            font-weight: 700; 
+            padding: 4px 10px; 
+            border-radius: 100px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
         }
 
-        .v-badge {
-            background: var(--brand-accent-light);
-            color: var(--brand-accent);
-            font-size: clamp(0.6rem, 1.2vh, 0.72rem);
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 100px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+        .v-mid { text-align: center; padding: 1vh 0; }
+        .v-label { 
+            font-size: clamp(0.6rem, 1.3vh, 0.7rem); 
+            color: var(--text-light); 
+            text-transform: uppercase; 
+            font-weight: 600; 
+            letter-spacing: 2px; 
+            margin-bottom: 4px; 
+        }
+        .v-amount { 
+            font-family: var(--font-mono); 
+            font-size: clamp(2.5rem, 5vh, 3.2rem); 
+            font-weight: 800; 
+            color: var(--brand); 
+            line-height: 1; 
+        }
+        .v-amount span { 
+            font-size: clamp(1.2rem, 2.5vh, 1.5rem); 
+            vertical-align: text-top; 
         }
 
-        .v-mid {
-            text-align: center;
-            padding: 0.8vh 0;
+        .v-bot { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            padding-top: 1vh; 
+        }
+        .v-barcode { 
+            display: flex; 
+            gap: 2px; 
+            height: clamp(20px, 4vh, 26px); 
+            align-items: stretch; 
+            opacity: 0.6; 
+        }
+        .v-barcode i { background: var(--text); border-radius: 1px; }
+        .v-status { 
+            font-size: clamp(0.65rem, 1.3vh, 0.75rem); 
+            font-weight: 700; 
+            color: var(--brand); 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+        }
+        .v-status::before { 
+            content: ''; 
+            width: 6px; 
+            height: 6px; 
+            border-radius: 50%; 
+            background: var(--brand); 
         }
 
-        .v-label {
-            font-size: clamp(0.62rem, 1.3vh, 0.72rem);
-            color: var(--text-light);
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
+        /* ── TIMELINE STEPS ── */
+        .steps { 
+            width: 100%; 
+            background: #fff; 
+            border-radius: 12px; 
+            padding: clamp(6px, 1vh, 10px) 24px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02); 
+            border: 1px solid var(--border); 
+            flex-shrink: 1; 
+            position: relative; 
+        }
+        .steps::before { 
+            content: ''; 
+            position: absolute; 
+            left: 37px; 
+            top: clamp(24px, 3.5vh, 32px); 
+            bottom: clamp(24px, 3.5vh, 32px); 
+            width: 2px; 
+            background: var(--border); 
+            z-index: 0; 
+            opacity: 0.5; 
+        }
+        .step { 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            padding: clamp(12px, 2vh, 16px) 0; 
+            position: relative; 
+            z-index: 1; 
+        }
+        .step:not(:last-child) { border-bottom: 1px solid var(--bg); }
+        .s-icon { 
+            width: 28px; 
+            height: 28px; 
+            border-radius: 50%; 
+            background: #fff; 
+            border: 2px solid var(--border); 
+            color: var(--text-mid); 
+            font-weight: 800; 
+            font-size: 0.8rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-shrink: 0; 
+            transition: 0.2s; 
+            z-index: 2; 
+        }
+        .step:last-child .s-icon { 
+            background: var(--brand); 
+            border-color: var(--brand); 
+            color: #fff; 
+            box-shadow: 0 2px 8px rgba(204, 0, 0, 0.3); 
+        }
+        .s-txt { 
+            font-size: clamp(0.75rem, 1.6vh, 0.85rem); 
+            font-weight: 600; 
+            color: var(--text); 
+            flex: 1; 
         }
 
-        .v-amount {
-            font-family: var(--font-mono);
-            font-size: clamp(2.6rem, 5vh, 3.2rem);
-            font-weight: 800;
-            color: var(--brand-accent);
-            line-height: 1;
-            letter-spacing: -1px;
+        /* ── CTA ── */
+        .cta-wrap { width: 100%; text-align: center; flex-shrink: 0; }
+        .btn { 
+            width: 100%; 
+            padding: clamp(14px, 2.5vh, 18px); 
+            font-size: clamp(1rem, 2vh, 1.1rem); 
+            font-weight: 700; 
+            color: #fff; 
+            background: var(--brand); 
+            border: none; 
+            border-radius: 100px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            transition: 0.2s; 
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.25); 
+            min-height: clamp(50px, 7vh, 60px); 
+            margin-bottom: 8px; 
         }
-
-        .v-amount span {
-            font-size: clamp(1.3rem, 2.5vh, 1.6rem);
-            vertical-align: text-top;
-            color: var(--brand-accent);
-            margin-right: 2px;
+        .btn:hover { background: var(--brand-dark); transform: translateY(-2px); }
+        .btn-txt { transition: 0.2s; }
+        .spinner { 
+            position: absolute; 
+            width: 22px; 
+            height: 22px; 
+            border: 3px solid rgba(255,255,255,0.3); 
+            border-top-color: #fff; 
+            border-radius: 50%; 
+            opacity: 0; 
+            animation: spin 0.8s linear infinite; 
         }
-
-        .v-bot {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding-top: 0.8vh;
-        }
-
-        .v-barcode {
-            display: flex;
-            gap: 2px;
-            height: clamp(18px, 3.5vh, 24px);
-            align-items: stretch;
-            opacity: 0.65;
-        }
-
-        .v-barcode i {
-            background: var(--text);
-            border-radius: 1px;
-        }
-
-        .v-status {
-            font-size: clamp(0.65rem, 1.3vh, 0.75rem);
-            font-weight: 800;
-            color: var(--brand-primary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .v-status::before {
-            content: '';
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #10B981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-            animation: pulse-dot 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.15); }
-        }
-
-        .steps {
-            width: 100%;
-            background: var(--surface);
-            border-radius: 14px;
-            padding: clamp(6px, 1vh, 10px) 22px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
-            border: 1px solid var(--border);
-            flex-shrink: 1;
-            position: relative;
-        }
-
-        .steps::before {
-            content: '';
-            position: absolute;
-            left: 36px;
-            top: clamp(24px, 3.5vh, 32px);
-            bottom: clamp(24px, 3.5vh, 32px);
-            width: 2px;
-            background: var(--border);
-            z-index: 0;
-            opacity: 0.7;
-        }
-
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: clamp(10px, 1.8vh, 15px) 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .step:not(:last-child) {
-            border-bottom: 1px solid #F8FAFC;
-        }
-
-        .s-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #fff;
-            border: 2px solid var(--border);
-            color: var(--text-mid);
-            font-weight: 800;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: 0.2s ease;
-            z-index: 2;
-        }
-
-        .step:last-child .s-icon {
-            background: var(--brand-primary);
-            border-color: var(--brand-primary);
-            color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 93, 170, 0.35);
-        }
-
-        .s-txt {
-            font-size: clamp(0.75rem, 1.5vh, 0.85rem);
-            font-weight: 600;
-            color: var(--text);
-            flex: 1;
-            line-height: 1.35;
-        }
-
-        .cta-wrap {
-            width: 100%;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .btn {
-            width: 100%;
-            padding: clamp(14px, 2.3vh, 18px);
-            font-size: clamp(0.95rem, 1.9vh, 1.05rem);
-            font-weight: 700;
-            color: #fff;
-            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
-            border: none;
-            border-radius: 100px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 16px rgba(0, 93, 170, 0.3);
-            min-height: clamp(48px, 6.5vh, 56px);
-            margin-bottom: 8px;
-        }
-
-        .btn:hover {
-            background: linear-gradient(135deg, #006ec9 0%, var(--brand-primary) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 93, 170, 0.4);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-txt {
-            transition: opacity 0.2s ease;
-            letter-spacing: 0.3px;
-        }
-
-        .spinner {
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            opacity: 0;
-            animation: spin 0.75s linear infinite;
-        }
-
-        .btn.loading .btn-txt {
-            opacity: 0;
-        }
-
-        .btn.loading .spinner {
-            opacity: 1;
-            pointer-events: none;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .note {
-            font-size: clamp(0.62rem, 1.2vh, 0.72rem);
-            color: var(--text-light);
-            font-weight: 500;
-        }
+        .btn.loading .btn-txt { opacity: 0; } 
+        .btn.loading .spinner { opacity: 1; pointer-events: none; }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .note { font-size: clamp(0.6rem, 1.2vh, 0.7rem); color: var(--text-light); }
     </style>
 </head>
 <body>
     <div class="page">
         <div class="container">
-            <!-- Voucher Card -->
+            
             <div class="voucher">
                 <div class="v-top">
-                    <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Wholesale_logo_2010-10-26.svg" 
-                        alt="Member Reward" 
-                        class="v-logo"
-                    >
+                    <!-- Clean SVG emblem without text -->
+                    <svg class="v-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="18" cy="18" r="18" fill="#CC0000"/>
+                        <circle cx="18" cy="18" r="12" fill="#FFFFFF"/>
+                        <circle cx="18" cy="18" r="6" fill="#CC0000"/>
+                    </svg>
                     <div class="v-badge">Reward</div>
                 </div>
                 <div class="v-mid">
@@ -369,64 +280,35 @@
                 </div>
                 <div class="v-bot">
                     <div class="v-barcode">
-                        <i style="width: 2px"></i>
-                        <i style="width: 4px"></i>
-                        <i style="width: 1px"></i>
-                        <i style="width: 3px"></i>
-                        <i style="width: 2px"></i>
-                        <i style="width: 1px"></i>
-                        <i style="width: 4px"></i>
-                        <i style="width: 2px"></i>
-                        <i style="width: 3px"></i>
-                        <i style="width: 1px"></i>
-                        <i style="width: 2px"></i>
-                        <i style="width: 4px"></i>
-                        <i style="width: 1px"></i>
+                        <i style="width: 2px"></i><i style="width: 4px"></i><i style="width: 1px"></i><i style="width: 3px"></i><i style="width: 2px"></i><i style="width: 1px"></i><i style="width: 4px"></i><i style="width: 2px"></i><i style="width: 3px"></i><i style="width: 1px"></i><i style="width: 2px"></i><i style="width: 4px"></i><i style="width: 1px"></i>
                     </div>
                     <div class="v-status">ACTIVE</div>
                 </div>
             </div>
 
-            <!-- Steps Section -->
             <div class="steps">
-                <div class="step">
-                    <div class="s-icon">1</div>
-                    <div class="s-txt">Click the button below</div>
-                </div>
-                <div class="step">
-                    <div class="s-icon">2</div>
-                    <div class="s-txt">Enter your email &amp; basic info</div>
-                </div>
-                <div class="step">
-                    <div class="s-icon">3</div>
-                    <div class="s-txt">Complete 4 to 5 required deals</div>
-                </div>
-                <div class="step">
-                    <div class="s-icon">4</div>
-                    <div class="s-txt">Receive your reward once verified</div>
-                </div>
+                <div class="step"><div class="s-icon">1</div><div class="s-txt">Click the button below</div></div>
+                <div class="step"><div class="s-icon">2</div><div class="s-txt">Enter your email &amp; basic info</div></div>
+                <div class="step"><div class="s-icon">3</div><div class="s-txt">Complete 4 to 5 required deals</div></div>
+                <div class="step"><div class="s-icon">4</div><div class="s-txt">Receive your reward once verified</div></div>
             </div>
 
-            <!-- CTA Section -->
             <div class="cta-wrap">
-                <button class="btn" id="claim-btn">
-                    <span class="btn-txt">Claim Reward</span>
-                    <span class="spinner"></span>
-                </button>
+                <button class="btn" id="claim-btn"><span class="btn-txt">Claim Reward</span><span class="spinner"></span></button>
                 <div class="note">Available in US, CA, AU, UK</div>
             </div>
+
         </div>
     </div>
 
     <script>
     (function() {
         const claimBtn = document.getElementById('claim-btn');
-        const destinationUrl = 'https://linkthem.net/aff_c?offer_id=4452&aff_id=171242';
-
-        claimBtn.addEventListener('click', function() {
+        claimBtn.addEventListener('click', () => {
             claimBtn.classList.add('loading');
-            setTimeout(function() {
-                window.location.href = destinationUrl;
+            setTimeout(() => {
+                // Updated Affiliate Link
+                window.location.href = 'https://linkthem.net/aff_c?offer_id=4708&aff_id=198158';
             }, 800);
         });
     })();
